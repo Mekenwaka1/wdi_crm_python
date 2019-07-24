@@ -91,27 +91,5 @@ print(contact2.id)
 print(contact1)
 contact1.update("first_name", "Bob")
 print(contact1)
-# contact1.update("last_name", "Baker")
-# print(contact1)
-
-
-# contacts  = [{
-#         email: "bettymakes@bitmakerlabs.com",
-#         first_name: "Bob",
-#         contact_id: 23,
-#         last_name: "Bob",
-#         note: "Loves Pokemon"
-#     },{
-#         py/object: "__main__.Contact",
-#         email: "bettymakes@bitmakerlabs.com",
-#         first_name: "Bob",
-#         contact_id: 83,
-#         last_name: "Bob",
-#         note: "Loves Pokemon"
-#     }
-# ]
-# print("Full name:", contact1.full_name())
-# print("Before delete: ", Contact.contacts)
-# contact1.delete()
-# print("After delete: ", Contact.contacts)
-# print("Test find_by: ", Contact.find_by("first_name", "Fred"))
+contact1.update("last_name", "Baker")
+print(contact1)
