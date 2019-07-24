@@ -53,7 +53,14 @@ class CRM:
     print('Enter a Note: ')
     note = input()
 
-    new_contact = Contact.create(first_name, last_name, email, note)
+    # new_contact = Contact.create(first_name, last_name, email, note)
+    new_contact = Contact.create(
+      first_name=first_name,
+      last_name=last_name,
+      email=email,
+      note=note
+    )
+
     print(new_contact)
     print(Contact.contacts)
 
@@ -64,7 +71,7 @@ class CRM:
     print('What would you like to Modify?')
     print('Enter ID: ')
     id = input()
-    contact = Contact.find(id)
+    contact = Contact.get(id=id)
 
     print('What attribute would you like to change? Enter first_name, last_name, email or note')
     choice = input()

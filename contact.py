@@ -1,95 +1,45 @@
-class Contact:
+from peewee import SqliteDatabase, Model, CharField, TextField
 
-  contacts = []
-  next_id = 1
+db = SqliteDatabase('crm.db')
 
-  def __init__(self, first_name, last_name, email, note):
-    """This method should initialize the contact's attributes"""
-    self.first_name = first_name
-    self.last_name = last_name
-    self.email = email
-    self.note = note
-    self.id = Contact.next_id 
-    Contact.next_id += 1
-    
-  def __str__(self):
-    return f"{self.first_name} {self.last_name}"
+class Contact(Model):
+  first_name = CharField()
+  last_name = CharField()
+  email = CharField()
+  note = TextField()
 
-  def __repr__(self):
-    return str(self)
-
-  def update(self, attribute, new_value):
-    """ This method should allow you to specify
-    1. which of the contact's attributes you want to update
-    2. the new value for that attribute
-    and then make the appropriate change to the contact
-    """
-    setattr(self, attribute, new_value)
-    return self
+  class Meta:
+    database = db
 
   def full_name(self):
-    """Returns the full (first and last) name of the contact"""
-    return f"{self.first_name} {self.last_name}"
+    return "{} {}".format(self.first_name, self.last_name)
 
-  def delete(self):
-    """This method should delete the contact
-    HINT: Check the Array class docs for built-in methods that might be useful here
-    """
-    Contact.contacts.remove(self)
-  
-  @classmethod
-  def create(cls, first_name, last_name, email, note):
-    """This method should call the initializer,
-    store the newly created contact, and then return it
-    """
-    new_contact = Contact(first_name, last_name, email, note)
-    print(new_contact)
+db.connect()
+db.create_tables([Contact])
 
 
-    cls.contacts.append(new_contact)
-    return new_contact
+# Using CRUD operations.
 
-  @classmethod
-  def all(cls):
-    """This method should return all of the existing contacts"""
-    return Contact.contacts 
+# Create two entries in the db
+contact1 = Contact.create(
+      first_name="Betty",
+      last_name="Maker",
+      email="bettymakes@bitmakerlabs.com",
+      note="Loves Pokemon"
+    )
 
-  @classmethod
-  def find(cls, id):
-    """ This method should accept an id as an argument
-    and return the contact who has that id
-    """
-    for contact in cls.contacts:
-      if contact.id == id:
-        return contact
+contact2 = Contact.create(
+      first_name="Fred",
+      last_name="Ngo",
+      email="fred@bitmakerlabs.com",
+      note="Loves his cat Corey"
+    )
 
-  @classmethod
-  def find_by(cls, attribute, value):
-    """This method should work similarly to the find method above
-    but it should allow you to search for a contact using attributes other than id
-    by specifying both the name of the attribute and the value
-    eg. searching for 'first_name', 'Betty' should return the first contact named Betty
-    """
-    for contact in cls.contacts:
-      if getattr(contact, attribute) == value:
-        return contact
+# Updates an instance in the db with the id: 30
+contact_to_update = Contact.select().where(Contact.id == 30).get()
+contact_to_update.first_name = "Lazio"
+contact_to_update.save()
 
-  @classmethod
-  def delete_all(cls):
-    """This method should delete all of the contacts"""
-    return cls.contacts.clear()
-
-# Feel free to add other methods here, if you need them.
-
-contact1 = Contact.create('Betty', 'Maker', 'bettymakes@bitmakerlabs.com', 'Loves Pokemon')
-contact2 = Contact.create('Fred', 'Ngo', 'fred@bitmakerlabs.com', 'Loves his cat Corey')
-contact3 = Contact.create('John', 'Smith', 'johnsmith@gmail.com', 'Loves Cars')
-print(len(Contact.contacts))
-print(contact1.id)
-print(contact2.id)
-
-print(contact1)
-contact1.update("first_name", "Bob")
-print(contact1)
-contact1.update("last_name", "Baker")
-print(contact1)
+# Delete an instance in the db with the id: 31
+contact_to_delete = Contact.select().where(Contact.id == 31).get()
+contact_to_delete.delete_instance()
